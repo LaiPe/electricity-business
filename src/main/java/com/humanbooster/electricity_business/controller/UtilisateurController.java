@@ -9,43 +9,43 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class UtilisateurController {
-    private final UtilisateurService utilisateurService;
+public class UtilisateurController extends GenericController<Utilisateur, Long> {
+    private final UtilisateurService service;
 
     @Autowired
-    public UtilisateurController(UtilisateurService utilisateurService) {
-        this.utilisateurService = utilisateurService;
+    protected UtilisateurController(UtilisateurService utilisateurService) {
+        super(utilisateurService);
+        this.service = utilisateurService;
     }
 
+    @Override
     @GetMapping("/utilisateurs")
-    public List<Utilisateur> getUtilisateurs() {
-        return utilisateurService.getAll();
+    public List<Utilisateur> getAll() {
+        return super.getAll();
     }
 
+    @Override
     @PostMapping("/utilisateurs")
-    public Utilisateur saveUtilisateur(@RequestBody Utilisateur utilisateur) {
-        return utilisateurService.create(utilisateur);
+    public Utilisateur create(@RequestBody Utilisateur utilisateur) {
+        return super.create(utilisateur);
     }
 
+    @Override
     @GetMapping("/utilisateurs/{id}")
-    public ResponseEntity<Utilisateur> getUtilisateur(@PathVariable Long id) {
-        return utilisateurService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Utilisateur> getById(@PathVariable Long id) {
+        return super.getById(id);
     }
 
+    @Override
     @DeleteMapping("/utilisateurs/{id}")
-    public ResponseEntity<Utilisateur> deleteUtilisateur(@PathVariable Long id) {
-        return utilisateurService.deleteById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Utilisateur> deleteById(@PathVariable Long id) {
+        return super.deleteById(id);
     }
 
-    @PutMapping("utilisateurs/{id}")
-    public ResponseEntity<Utilisateur> updateUtilisateur(@PathVariable Long id, @RequestBody Utilisateur newUtilisateur) {
-        return utilisateurService.update(newUtilisateur, id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-
+    @Override
+    @PutMapping("/utilisateurs/{id}")
+    public ResponseEntity<Utilisateur> updateById(@PathVariable Long id, @RequestBody Utilisateur utilisateur) {
+        return super.updateById(id, utilisateur);
     }
+
 }
