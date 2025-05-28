@@ -1,0 +1,33 @@
+### GET request to example server
+POST http://localhost:8080/utilisateurs
+content-type: application/json
+
+{
+  "nom" : "Peyronnet",
+  "prenom" : "Léo",
+  "pseudo" : "LaiPe",
+  "email" : "leopey@test.fr",
+  "motDePasse" : "aaa",
+  "IBAN" : "AAZZEERRTTYYUUIIOOPP"
+}
+
+###
+GET http://localhost:8080/utilisateurs
+
+###
+GET http://localhost:8080/utilisateurs/1
+
+###
+DELETE http://localhost:8080/utilisateurs/2
+
+###
+PUT http://localhost:8080/utilisateurs/1
+content-type: application/json
+
+{
+  "nom" : "Cas",
+  "prenom" : "Quentin",
+  "pseudo" : "layk63",
+  "email" : "grosneuillesucréausucre@email.com",
+  "motDePasse" : "aaa"
+}
