@@ -13,27 +13,32 @@ public abstract class GenericController<T, ID> {
         this.service = service;
     }
 
+    @GetMapping
     public List<T> getAll() {
         return service.getAll();
     }
 
+    @PostMapping
     public T create(@RequestBody T entity) {
         return service.create(entity);
     }
 
-    public ResponseEntity<T> getById(ID id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<T> getById(@PathVariable ID id) {
         return service.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<T> deleteById(ID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<T> deleteById(@PathVariable ID id) {
         return service.deleteById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-     public ResponseEntity<T> updateById(ID id, T newEntity) {
+    @PutMapping("/{id}")
+     public ResponseEntity<T> updateById(@PathVariable ID id, @RequestBody T newEntity) {
         return service.update(newEntity, id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
