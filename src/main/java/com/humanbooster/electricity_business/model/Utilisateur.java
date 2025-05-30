@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "utilisateur")
@@ -58,5 +59,9 @@ public class Utilisateur {
     @NotNull
     private Boolean banni;
 
+    @OneToMany(targetEntity = Lieu.class, mappedBy = "utilisateur")
+    private List<Lieu> lieux;
 
+    @OneToMany(targetEntity = AdresseFacturation.class, mappedBy = "utilisateur")
+    private List<AdresseFacturation> adressesFacturation;
 }
