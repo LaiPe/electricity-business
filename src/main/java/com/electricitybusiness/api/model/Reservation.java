@@ -3,7 +3,6 @@ package com.electricitybusiness.api.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,6 @@ public class Reservation {
 
     @Column(name = "date_debut", nullable = false)
     @NotNull(message = "La date de début est obligatoire")
-    @Future(message = "La date de début doit être dans le futur")
     private LocalDateTime dateDebut;
 
     @Column(name = "date_fin", nullable = false)
