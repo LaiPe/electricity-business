@@ -118,7 +118,30 @@ public class BorneLocalisator {
      * @return Liste des bornes libres trouvées dans le rayon spécifié au moment donné
      */
     public static List<BorneDTO> get_free_nearby_borne(BigDecimal longitude, BigDecimal latitude, double rayon, LocalDateTime time) {
-        // TODO: Implémenter la logique de recherche des bornes libres dans le rayon
-        return List.of();
+        if (time == null) {
+            throw new IllegalArgumentException("Le temps ne peut pas être null");
+        }
+        if (longitude == null || latitude == null) {
+            throw new IllegalArgumentException("Les coordonnées ne peuvent pas être null");
+        }
+        if (longitude.doubleValue() < -180 || longitude.doubleValue() > 180) {
+            throw new IllegalArgumentException("La longitude doit être comprise entre -180 et 180");
+        }
+        if (latitude.doubleValue() < -90 || latitude.doubleValue() > 90) {
+            throw new IllegalArgumentException("La latitude doit être comprise entre -90 et 90");
+        }
+
+        List<Borne> allBornes = borneService.findAll();
+        List<Reservation> activeReservations = reservationService.findAll().stream()
+            .filter(r -> r.getEtat() == EtatReservation.ACCEPTEE)
+            .filter(r -> time.isAfter(r.getDateDebut()) && time.isBefore(r.getDateFin()))
+            .collect(Collectors.toList());
+
+        return allBornes.stream()
+            .filter(borne -> calculateDistance(latitude, longitude, borne.getLatitude(), borne.getLongitude()) <= rayon)
+            .filter(borne -> activeReservations.stream()
+                .noneMatch(reservation -> reservation.getBorne().getNumBorne().equals(borne.getNumBorne())))
+            .map(entityMapper::toDTO)
+            .collect(Collectors.toList());
     }
 }
