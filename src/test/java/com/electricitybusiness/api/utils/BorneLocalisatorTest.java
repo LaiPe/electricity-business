@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,10 +147,6 @@ class BorneLocalisatorTest {
         testRayon = 5.0; // 5 kilomètres
         testTime = LocalDateTime.now();
     }
-
-
-
-    
 
     @Test
     @DisplayName("Test de get_nearby_borne avec des coordonnées valides")
@@ -305,6 +303,54 @@ class BorneLocalisatorTest {
         assertThrows(IllegalArgumentException.class, () -> 
             BorneLocalisator.get_free_nearby_borne(testLongitude, testLatitude, testRayon, null),
             "Devrait lever une exception pour un temps null"
+        );
+    }
+
+    @ParameterizedTest(name = "Distance entre ({0}, {1}) et ({2}, {3}) devrait être {4} km (±{5} km)")
+    @CsvSource({
+        "48.8566, 2.3522, 48.8566, 2.3522, 0.0, 0.001", // Même point (Paris)
+        "48.8566, 2.3522, 45.7578, 4.8320, 392.0, 1.0", // Paris-Lyon
+        "0.0, 0.0, 0.0, 1.0, 111.2, 0.1", // 1 degré de longitude à l'équateur
+        "0.0, 0.0, 1.0, 0.0, 111.2, 0.1", // 1 degré de latitude
+        "48.8566, 2.3522, 40.7128, -74.0060, 5837.0, 1.0" // Paris-New York
+    })
+    void testCalculateDistance(String lat1Str, String lon1Str, String lat2Str, String lon2Str, 
+                             double expectedDistance, double tolerance) {
+        // Arrange
+        BigDecimal lat1 = new BigDecimal(lat1Str);
+        BigDecimal lon1 = new BigDecimal(lon1Str);
+        BigDecimal lat2 = new BigDecimal(lat2Str);
+        BigDecimal lon2 = new BigDecimal(lon2Str);
+
+        // Act
+        double distance = BorneLocalisator.calculateDistance(lat1, lon1, lat2, lon2);
+
+        // Assert
+        assertEquals(expectedDistance, distance, tolerance, 
+            String.format("Distance incorrecte entre (%s, %s) et (%s, %s)", 
+                lat1Str, lon1Str, lat2Str, lon2Str));
+    }
+
+    @ParameterizedTest(name = "Coordonnées invalides: lat1={0}, lon1={1}, lat2={2}, lon2={3}")
+    @CsvSource({
+        "91.0, 0.0, 0.0, 0.0", // Latitude trop grande
+        "-91.0, 0.0, 0.0, 0.0", // Latitude trop petite
+        "0.0, 181.0, 0.0, 0.0", // Longitude trop grande
+        "0.0, -181.0, 0.0, 0.0", // Longitude trop petite
+        "null, 0.0, 0.0, 0.0", // Latitude null
+        "0.0, null, 0.0, 0.0" // Longitude null
+    })
+    void testCalculateDistanceInvalidCoordinates(String lat1Str, String lon1Str, String lat2Str, String lon2Str) {
+        // Arrange
+        BigDecimal lat1 = "null".equals(lat1Str) ? null : new BigDecimal(lat1Str);
+        BigDecimal lon1 = "null".equals(lon1Str) ? null : new BigDecimal(lon1Str);
+        BigDecimal lat2 = new BigDecimal(lat2Str);
+        BigDecimal lon2 = new BigDecimal(lon2Str);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> 
+            BorneLocalisator.calculateDistance(lat1, lon1, lat2, lon2),
+            "Devrait lever une exception pour des coordonnées invalides"
         );
     }
 } 
