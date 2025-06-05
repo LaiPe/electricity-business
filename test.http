@@ -1,33 +1,391 @@
-### GET request to example server
-POST http://localhost:8080/utilisateurs
-content-type: application/json
+### Electricity Business API Tests
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+# ===============================
+# LIEUX - Tests CRUD
+# ===============================
+
+### 1. Créer un lieu
+POST {{baseUrl}}/api/lieux
+Content-Type: {{contentType}}
 
 {
-  "nom" : "Peyronnet",
-  "prenom" : "Léo",
-  "pseudo" : "LaiPe",
-  "email" : "leopey@test.fr",
-  "motDePasse" : "aaa",
-  "IBAN" : "AAZZEERRTTYYUUIIOOPP"
+  "instructions": "Parking principal du centre commercial"
 }
 
-###
-GET http://localhost:8080/utilisateurs
+### 2. Récupérer tous les lieux
+GET {{baseUrl}}/api/lieux
 
-###
-GET http://localhost:8080/utilisateurs/1
+### 3. Récupérer un lieu par ID
+GET {{baseUrl}}/api/lieux/1
 
-###
-DELETE http://localhost:8080/utilisateurs/2
-
-###
-PUT http://localhost:8080/utilisateurs/1
-content-type: application/json
+### 4. Mettre à jour un lieu
+PUT {{baseUrl}}/api/lieux/1
+Content-Type: {{contentType}}
 
 {
-  "nom" : "Cas",
-  "prenom" : "Quentin",
-  "pseudo" : "layk63",
-  "email" : "grosneuillesucréausucre@email.com",
-  "motDePasse" : "aaa"
+  "instructions": "Parking principal du centre commercial - Accès 24h/24"
 }
+
+### 5. Supprimer un lieu
+# DELETE {{baseUrl}}/api/lieux/1
+
+# ===============================
+# ADRESSES - Tests CRUD
+# ===============================
+
+### 6. Créer une adresse
+POST {{baseUrl}}/api/adresses
+Content-Type: {{contentType}}
+
+{
+  "nomAdresse": "123 Avenue de la Madeleine",
+  "numeroEtRue": "123",
+  "codePostal": "75008",
+  "ville": "Paris",
+  "pays": "France",
+  "complement": "Entrée principale",
+  "etage": "1",
+  "lieu": {
+    "numLieu": 2
+  }
+}
+
+### 7. Récupérer toutes les adresses
+GET {{baseUrl}}/api/adresses
+
+### 8. Récupérer une adresse par ID
+GET {{baseUrl}}/api/adresses/1
+
+### 9. Mettre à jour une adresse
+PUT {{baseUrl}}/api/adresses/1
+Content-Type: {{contentType}}
+
+{
+  "numeroEtRue": "123 Avenue des Champs-Elysees",
+  "codePostal": "75008",
+  "ville": "Paris",
+  "pays": "France",
+  "complement": "Entrée principale",
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+# ===============================
+# UTILISATEURS - Tests CRUD
+# ===============================
+
+### 10. Créer un utilisateur
+POST {{baseUrl}}/api/utilisateurs
+Content-Type: {{contentType}}
+
+{
+  "pseudo": "jean.duont",
+  "nomUtilisateur": "Dpont",
+  "prenom": "Jean",
+  "adresseMail": "jean.dupont@emai.com",
+  "motDePasse": "motdepase123",
+  "role": "CLIENT",
+  "dateDeNaissance": "1990-05-15",
+  "compteValide": true,
+  "banni": false,
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+### Créer un autre utilisateur
+POST {{baseUrl}}/api/utilisateurs
+Content-Type: {{contentType}}
+
+{
+  "pseudo": "jean.dupont",
+  "nomUtilisateur": "Dupont",
+  "prenom": "Jean",
+  "adresseMail": "jean.dupont@email.com",
+  "motDePasse": "motdepasse123",
+  "role": "CLIENT",
+  "dateDeNaissance": "1990-05-15",
+  "compteValide": true,
+  "banni": false,
+  "vehicule": "Tesla Model 3",
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+
+### 11. Récupérer tous les utilisateurs
+GET {{baseUrl}}/api/utilisateurs
+
+### 12. Récupérer un utilisateur par ID
+GET {{baseUrl}}/api/utilisateurs/1
+
+### 13. Mettre à jour un utilisateur
+PUT {{baseUrl}}/api/utilisateurs/1
+Content-Type: {{contentType}}
+
+{
+  "pseudo": "jean.dupont",
+  "nomUtilisateur": "Dupont",
+  "prenom": "Jean",
+  "adresseMail": "jean.dupont@email.com",
+  "motDePasse": "motdepasse123",
+  "role": "CLIENT",
+  "dateDeNaissance": "1990-05-15",
+  "compteValide": true,
+  "banni": false,
+  "vehicule": "Tesla Model 3",
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+# ===============================
+# BORNES - Tests CRUD
+# ===============================
+
+### 14. Créer une borne
+POST {{baseUrl}}/api/bornes
+Content-Type: {{contentType}}
+
+{
+  "nomBorne": "Borne-A001",
+  "latitude": 48.8566,
+  "longitude": 2.3522,
+  "puissance": 22.0,
+  "etat": "ACTIVE",
+  "occupee": false,
+  "surPied": true,
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+### 15. Récupérer toutes les bornes
+GET {{baseUrl}}/api/bornes
+
+### 16. Récupérer une borne par ID
+GET {{baseUrl}}/api/bornes/1
+
+### 17. Mettre à jour une borne
+PUT {{baseUrl}}/api/bornes/1
+Content-Type: {{contentType}}
+
+{
+  "nomBorne": "Borne-A001-Premium",
+  "latitude": 48.8566,
+  "longitude": 2.3522,
+  "puissance": 50.0,
+  "etat": "ACTIVE",
+  "occupee": false,
+  "surPied": true,
+  "instruction": "Borne haute puissance",
+  "lieu": {
+    "numLieu": 1
+  }
+}
+
+# ===============================
+# TARIFS HORAIRES - Tests CRUD
+# ===============================
+
+### 18. Créer un tarif horaire
+POST {{baseUrl}}/api/tarifs-horaires
+Content-Type: {{contentType}}
+
+{
+  "heureDebut": "08:00:00",
+  "heureFin": "18:00:00",
+  "tarifParMinute": 0.004167,
+  "dateDebut": "2025-06-01",
+  "actif": true,
+  "borne": {
+    "numBorne": 1
+  }
+}
+
+### 19. Récupérer tous les tarifs horaires
+GET {{baseUrl}}/api/tarifs-horaires
+
+### 20. Récupérer un tarif horaire par ID
+GET {{baseUrl}}/api/tarifs-horaires/1
+
+### 21. Mettre à jour un tarif horaire
+PUT {{baseUrl}}/api/tarifs-horaires/1
+Content-Type: {{contentType}}
+
+{
+  "heureDebut": "08:00:00",
+  "heureFin": "20:00:00",
+  "tarifParMinute": 0.005000,
+  "dateDebut": "2025-06-01",
+  "actif": true,
+  "borne": {
+    "numBorne": 1
+  }
+}
+
+# ===============================
+# MEDIAS - Tests CRUD
+# ===============================
+
+### 22. Créer un média
+POST {{baseUrl}}/api/medias
+Content-Type: {{contentType}}
+
+{
+  "nomMedia": "Photo borne A001",
+  "url": "https://example.com/photos/borne-a001.jpg",
+  "type": "IMAGE"
+}
+
+### 23. Récupérer tous les médias
+GET {{baseUrl}}/api/medias
+
+### 24. Récupérer un média par ID
+GET {{baseUrl}}/api/medias/1
+
+### 25. Mettre à jour un média
+PUT {{baseUrl}}/api/medias/1
+Content-Type: {{contentType}}
+
+{
+  "nomMedia": "Photo borne A001 - Vue d'ensemble",
+  "url": "https://example.com/photos/borne-a001-overview.jpg",
+  "type": "IMAGE"
+}
+
+# ===============================
+# RESERVATIONS - Tests CRUD
+# ===============================
+
+### 26. Créer une réservation
+POST {{baseUrl}}/api/reservations
+Content-Type: {{contentType}}
+
+{
+  "dateDebut": "2025-06-01T10:00:00",
+  "dateFin": "2025-06-01T12:00:00",
+  "prixMinuteHisto": 0.004167,
+  "etat": "CONFIRMEE",
+  "montantTotal": 15.0,
+  "utilisateur": {
+    "numUtilisateur": 1
+  },
+  "borne": {
+    "numBorne": 1
+  }
+}
+
+### 27. Récupérer toutes les réservations
+GET {{baseUrl}}/api/reservations
+
+### 28. Récupérer une réservation par ID
+GET {{baseUrl}}/api/reservations/1
+
+### 29. Mettre à jour une réservation
+PUT {{baseUrl}}/api/reservations/1
+Content-Type: {{contentType}}
+
+{
+  "dateDebut": "2025-06-01T10:00:00",
+  "dateFin": "2025-06-01T14:00:00",
+  "prixMinuteHisto": 0.004167,
+  "etat": "CONFIRMEE",
+  "montantTotal": 30.0,
+  "utilisateur": {
+    "numUtilisateur": 1
+  },
+  "borne": {
+    "numBorne": 1
+  }
+}
+
+# ===============================
+# TESTS AVEC DONNÉES INVALIDES
+# ===============================
+
+### 30. Test validation - Adresse sans numéro de rue (doit échouer)
+POST {{baseUrl}}/api/adresses
+Content-Type: {{contentType}}
+
+{
+  "codePostal": "75008",
+  "ville": "Paris",
+  "pays": "France"
+}
+
+### 31. Test validation - Utilisateur sans email (doit échouer)
+POST {{baseUrl}}/api/utilisateurs
+Content-Type: {{contentType}}
+
+{
+  "pseudo": "testuser",
+  "nomUtilisateur": "Test",
+  "prenom": "User",
+  "motDePasse": "password"
+}
+
+### 32. Test validation - Borne avec coordonnées invalides (doit échouer)
+POST {{baseUrl}}/api/bornes
+Content-Type: {{contentType}}
+
+{
+  "nomBorne": "Borne-Test",
+  "latitude": 200.0,
+  "longitude": 200.0,
+  "puissance": -10.0
+}
+
+# ===============================
+# TESTS DE SUPPRESSION
+# ===============================
+
+### 33. Supprimer une réservation
+# DELETE {{baseUrl}}/api/reservations/1
+
+### 34. Supprimer un média
+# DELETE {{baseUrl}}/api/medias/1
+
+### 35. Supprimer un tarif horaire
+# DELETE {{baseUrl}}/api/tarifs-horaires/1
+
+### 36. Supprimer une borne
+# DELETE {{baseUrl}}/api/bornes/1
+
+### 37. Supprimer un utilisateur
+# DELETE {{baseUrl}}/api/utilisateurs/1
+
+### 38. Supprimer une adresse
+# DELETE {{baseUrl}}/api/adresses/1
+
+### 39. Supprimer un lieu
+# DELETE {{baseUrl}}/api/lieux/1
+
+# ===============================
+# TESTS D'ERREURS 404
+# ===============================
+
+### 40. Récupérer un lieu inexistant (404)
+GET {{baseUrl}}/api/lieux/999
+
+### 41. Mettre à jour un utilisateur inexistant (404)
+PUT {{baseUrl}}/api/utilisateurs/999
+Content-Type: {{contentType}}
+
+{
+  "pseudo": "inexistant",
+  "nomUtilisateur": "Test",
+  "prenom": "Test",
+  "adresseMail": "test@test.com",
+  "motDePasse": "password"
+}
+
+### 42. Supprimer une borne inexistante (404)
+DELETE {{baseUrl}}/api/bornes/999 
