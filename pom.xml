@@ -14,7 +14,7 @@
     <groupId>com.electricitybusiness</groupId>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Small_Eb</name>
+    <name>eb_api</name>
     <description>API REST pour gestion des bornes de recharge électrique</description>
     
     <properties>
