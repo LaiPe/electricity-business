@@ -388,4 +388,94 @@ Content-Type: {{contentType}}
 }
 
 ### 42. Supprimer une borne inexistante (404)
-DELETE {{baseUrl}}/api/bornes/999 
+DELETE {{baseUrl}}/api/bornes/999
+
+### Test de l'API Electricity Business avec JWT
+
+### 1. Test de l'endpoint public
+GET http://localhost:8080/api/public/home
+
+### 2. Inscription d'un nouvel utilisateur
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "pseudo": "testuser",
+  "password": "password123",
+  "email": "testuser@example.com",
+  "role": "CLIENT",
+  "nomUtilisateur": "Test",
+  "prenom": "User",
+  "dateDeNaissance": "1990-01-01"
+}
+
+### 3. Connexion et obtention du token JWT
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 4. Test d'accès à une route protégée avec le token JWT
+# Remplacez YOUR_JWT_TOKEN par le token obtenu à l'étape précédente
+GET http://localhost:8080/api/bornes
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MDI0MDEyMCwiZXhwIjoxNzUwMzI2NTIwfQ.qSM6COvoNRm7GfvsJxVIlHH080HlMIVxmPYtjf84NXM
+
+### 5. Test d'accès aux adresses (ADMIN/PROPRIETAIRE uniquement)
+GET http://localhost:8080/api/adresses
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 6. Test de création d'une borne (ADMIN/PROPRIETAIRE uniquement)
+POST http://localhost:8080/api/bornes
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "nomBorne": "Borne Test JWT",
+  "latitude": 48.8566,
+  "longitude": 2.3522,
+  "puissance": 50.0,
+  "etat": "ACTIVE"
+}
+
+### 7. Test d'accès sans token (doit retourner 401)
+GET http://localhost:8080/api/bornes
+
+### 8. Test avec un token invalide (doit retourner 401)
+GET http://localhost:8080/api/bornes
+Authorization: Bearer invalid.token.here
+
+### 9. Test de l'endpoint de statut d'authentification
+GET http://localhost:8080/api/auth/status
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 10. Test avec les utilisateurs de test créés par DataInitializer
+
+# Connexion admin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+###
+# Connexion propriétaire
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "proprietaire",
+  "password": "proprietaire123"
+}
+###
+# Connexion client
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "client",
+  "password": "client123"
+} 

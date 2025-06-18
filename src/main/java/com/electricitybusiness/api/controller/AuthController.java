@@ -3,11 +3,16 @@ package com.electricitybusiness.api.controller;
 import com.electricitybusiness.api.model.RoleUtilisateur;
 import com.electricitybusiness.api.model.Utilisateur;
 import com.electricitybusiness.api.service.JpaUserDetailsService;
+import com.electricitybusiness.api.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +23,7 @@ import java.util.Map;
 
 /**
  * Contrôleur pour l'authentification et l'inscription des utilisateurs.
+ * Gère l'authentification JWT et l'inscription des nouveaux utilisateurs.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -27,6 +33,48 @@ public class AuthController {
 
     private final JpaUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+
+    /**
+     * Endpoint d'authentification JWT.
+     * POST /api/auth/login
+     */
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody AuthRequest request) {
+        log.info("Tentative de connexion pour l'utilisateur: {}", request.username());
+        try {
+            // Authentifier l'utilisateur
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
+            );
+            
+            // Générer le token JWT
+            String token = jwtService.generateToken(request.username());
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("type", "Bearer");
+            response.put("message", "Authentification réussie");
+            response.put("username", request.username());
+            
+            log.info("Utilisateur connecté avec succès: {}", request.username());
+            return ResponseEntity.ok(response);
+            
+        } catch (BadCredentialsException e) {
+            log.warn("Tentative de connexion échouée pour l'utilisateur: {}", request.username());
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Identifiants invalides");
+            errorResponse.put("message", "Nom d'utilisateur ou mot de passe incorrect");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        } catch (Exception e) {
+            log.error("Erreur lors de l'authentification: {}", e.getMessage());
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Erreur d'authentification");
+            errorResponse.put("message", "Une erreur est survenue lors de l'authentification");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 
     /**
      * Endpoint d'inscription d'un nouvel utilisateur.
@@ -77,6 +125,11 @@ public class AuthController {
         response.put("message", "Utilisateur authentifié");
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * Record pour la requête d'authentification.
+     */
+    public record AuthRequest(String username, String password) {}
 
     /**
      * Classe interne pour la requête d'inscription.
