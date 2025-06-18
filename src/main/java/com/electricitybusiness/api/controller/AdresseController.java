@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +30,10 @@ public class AdresseController {
     /**
      * Récupère toutes les adresses.
      * GET /api/adresses
+     * Accessible par les ADMIN et PROPRIETAIRE
      */
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROPRIETAIRE')")
     public ResponseEntity<List<AdresseDTO>> getAllAdresses() {
         List<Adresse> adresses = adresseService.findAll();
         List<AdresseDTO> adressesDTO = adresses.stream()
@@ -42,8 +45,10 @@ public class AdresseController {
     /**
      * Récupère une adresse par son ID.
      * GET /api/adresses/{id}
+     * Accessible par les ADMIN et PROPRIETAIRE
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROPRIETAIRE')")
     public ResponseEntity<AdresseDTO> getAdresseById(@PathVariable Long id) {
         return adresseService.findById(id)
                 .map(adresse -> ResponseEntity.ok(mapper.toDTO(adresse)))
@@ -53,8 +58,10 @@ public class AdresseController {
     /**
      * Crée une nouvelle adresse.
      * POST /api/adresses
+     * Accessible uniquement par les ADMIN
      */
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdresseDTO> createAdresse(@Valid @RequestBody AdresseDTO adresseDTO) {
         Adresse adresse = mapper.toEntity(adresseDTO);
         Adresse savedAdresse = adresseService.save(adresse);
@@ -65,8 +72,10 @@ public class AdresseController {
     /**
      * Met à jour une adresse existante.
      * PUT /api/adresses/{id}
+     * Accessible uniquement par les ADMIN
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdresseDTO> updateAdresse(@PathVariable Long id, @Valid @RequestBody AdresseDTO adresseDTO) {
         if (!adresseService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -80,8 +89,10 @@ public class AdresseController {
     /**
      * Supprime une adresse.
      * DELETE /api/adresses/{id}
+     * Accessible uniquement par les ADMIN
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAdresse(@PathVariable Long id) {
         if (!adresseService.existsById(id)) {
             return ResponseEntity.notFound().build();
