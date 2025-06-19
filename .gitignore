@@ -1,2 +1,113 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+*.yml
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+**/target/
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# IDE - Eclipse
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# IDE - NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# IDE - VS Code
+.vscode/
+
+# Spring Boot
+.springBeans
+.sts4-cache
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# H2 Database files
+*.db
+*.mv.db
+*.trace.db
+
+# Application properties with sensitive data
+application-local.properties
+application-secret.properties
+
+# Conception - Fichiers créés lors de la conception
+#*.drawio
+#*.drawio.xml
+#bc*.drawio.xml
+#MCD_*.drawio.xml
+#MLD_*.drawio.xml
+
+# Conception - Fichiers temporaires
 *.bkp
 *.dtmp
+
+# Fichiers temporaires et de sauvegarde
+*~
+.#*
+\#*#
+.*.swp
+.*.swo 
+
+.cursorrules
