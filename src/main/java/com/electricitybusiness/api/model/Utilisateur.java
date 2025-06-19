@@ -94,6 +94,8 @@ public class Utilisateur implements UserDetails {
     @JsonManagedReference("utilisateur-reservations")
     private List<Reservation> reservations;
 
+
+
     // Méthodes UserDetails
     @Override
     @JsonIgnore

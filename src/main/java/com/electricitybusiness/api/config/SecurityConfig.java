@@ -42,15 +42,6 @@ public class SecurityConfig {
             
             // Configuration des autorisations HTTP
             .authorizeHttpRequests(authz -> authz
-                // Routes d'authentification (publiques)
-                .requestMatchers("/api/auth/**").permitAll()
-                
-                // Routes publiques
-                .requestMatchers("/", "/home", "/api/public/**").permitAll()
-                
-                // Console H2 (uniquement en développement)
-                .requestMatchers("/h2-console/**").permitAll()
-                
                 // Routes admin
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 
@@ -59,6 +50,12 @@ public class SecurityConfig {
                 
                 // Routes pour les clients
                 .requestMatchers("/api/clients/**").hasRole("CLIENT")
+
+                // Routes d'authentification (publiques)
+                .requestMatchers("/api/auth/**").permitAll()
+
+                // Routes publiques
+                .requestMatchers("/", "/home", "/api/public/**").permitAll()
                 
                 // Toutes les autres routes nécessitent une authentification
                 .anyRequest().authenticated()
