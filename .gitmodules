@@ -1,0 +1,6 @@
+[submodule "electricity-business-front"]
+	path = electricity-business-front
+	url = https://github.com/LaiPe/electricity-business-front
+[submodule "electricity-business-back"]
+	path = electricity-business-back
+	url = https://github.com/LaiPe/electricity-business-back
