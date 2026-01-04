@@ -1,6 +1,6 @@
 # ⚡ Electricity Business
 
-**Plateforme complète de gestion de stations de recharge électrique**
+**Plateforme complète de gestion de stations de recharge pour véhicules électriques**
 
 ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green?logo=spring)
@@ -9,459 +9,516 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.3-blue?logo=mysql)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?logo=mongodb)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+![Nginx](https://img.shields.io/badge/Nginx-Alpine-green?logo=nginx)
 
-## 📋 Vue d'ensemble
+---
 
-**Electricity Business** est une plateforme complète et moderne dédiée à la gestion d'un écosystème de stations de recharge pour véhicules électriques. Le projet offre une solution end-to-end où les propriétaires de stations peuvent mettre leurs bornes à disposition et où les propriétaires de véhicules électriques peuvent facilement rechercher et réserver des créneaux de recharge.
+## 📋 Table des matières
 
-### 🎯 Objectif du projet
+- [Vue d'ensemble](#-vue-densemble)
+- [Fonctionnalités](#-fonctionnalités)
+- [Stack technologique](#-stack-technologique)
+- [Architecture logicielle](#-architecture-logicielle)
+- [Guide de déploiement](#-guide-de-déploiement)
+- [Documentation](#-documentation)
+- [Licence](#-licence)
 
-Révolutionner l'accès à la recharge électrique en créant un écosystème connecté qui :
-- **Simplifie la gestion** des stations de recharge pour les propriétaires
-- **Facilite la recherche et réservation** de créneaux pour les utilisateurs
-- **Optimise l'utilisation** des infrastructures de recharge existantes
-- **Démocratise l'accès** à la mobilité électrique
+---
 
-### 🏗️ Architecture du projet
+## 🔍 Vue d'ensemble
 
-Le projet est composé de **deux applications principales** :
+**Electricity Business** est une plateforme web complète permettant la gestion d'un écosystème de stations de recharge pour véhicules électriques. Elle connecte les propriétaires de bornes de recharge avec les conducteurs de véhicules électriques à la recherche de créneaux de recharge.
+
+Le projet se compose de deux applications distinctes :
 
 ```
 electricity-business/
-├── electricity-business-back/    # API REST - Backend Spring Boot
-└── electricity-business-front/   # Interface utilisateur - Frontend React
+├── electricity-business-back/    # API REST (Spring Boot)
+└── electricity-business-front/   # Interface utilisateur (React)
 ```
 
-## 🚀 Fonctionnalités principales
+---
 
-### 🔐 Système d'authentification complet
-- **Inscription sécurisée** avec vérification d'email obligatoire
-- **Authentification JWT** via cookies HTTP-only sécurisés
-- **Gestion des rôles** (Utilisateur, Administrateur)
-- **Protection contre les comptes bannis** et non vérifiés
+## ✨ Fonctionnalités
 
-### 👥 Gestion multi-utilisateurs
-- **Profils utilisateur** personnalisables et complets
-- **Système de permissions** granulaire selon les rôles
-- **Interface administrateur** pour la supervision de la plateforme
-- **Tableaux de bord** adaptés aux différents types d'utilisateurs
+### Authentification & Sécurité
+- Inscription avec vérification d'email
+- Authentification JWT via cookies HTTP-only
+- Gestion des rôles (USER, ADMIN) et des statuts (banni, non vérifié)
 
-### 🚗 Écosystème véhicules électriques
-- **Catalogue exhaustif** de modèles de véhicules électriques
-- **Gestion des véhicules personnels** avec caractéristiques techniques
-- **Base de données** des spécifications (autonomie, puissance de charge)
-- **Intégration** avec les données de recharge optimales
+### Gestion des utilisateurs
+- Profils utilisateur personnalisables
+- Tableaux de bord adaptés selon le rôle
 
-### 📍 Gestion géospatiale des stations
-- **Recherche géolocalisée** des stations proches avec MongoDB
-- **Gestion complète** des lieux et stations de recharge
-- **Interface propriétaire** intuitive pour administrer ses bornes
-- **Visualisation en temps réel** des disponibilités
+### Véhicules électriques
+- Catalogue de modèles de véhicules avec caractéristiques techniques
+- Gestion des véhicules personnels (CRUD)
 
-### 📅 Système de réservation intelligent
-- **Réservation de créneaux** avec validation des disponibilités
-- **Suivi en temps réel** des sessions de recharge
-- **États avancés** : programmée, en cours, terminée, annulée
-- **Système d'évaluation** et de retours d'expérience
-- **Historique complet** pour utilisateurs et propriétaires
+### Stations de recharge
+- Création et gestion de lieux et stations
+- Recherche géolocalisée des stations proches
+- Carte interactive avec clustering dynamique
+- Géocodage direct et inverse
 
-### 🔍 Recherche avancée et disponibilités
-- **Recherche par créneaux horaires** pour trouver les stations libres
-- **Filtres intelligents** (type de borne, puissance, prix)
-- **Disponibilités en temps réel** avec mises à jour automatiques
-- **Suggestions personnalisées** basées sur le véhicule de l'utilisateur
+### Réservations
+- Réservation de créneaux horaires
+- Workflow complet : pending → accepted → ongoing → completed
+- Actions : accepter, refuser, annuler, démarrer, terminer
+- Système d'évaluation post-recharge
+- Export PDF et Excel
 
-## 🛠️ Stack technique complète
+---
 
-### 🎯 Backend - API REST (Spring Boot)
-- **Java 21** avec Eclipse Temurin
-- **Spring Boot 3.5.3** (Web, Security, Data JPA, Data MongoDB)
-- **Spring Security** avec authentification JWT
-- **MySQL 8.3** - Données relationnelles (utilisateurs, véhicules, réservations)
-- **MongoDB 7.0** - Données géospatiales (stations de recharge)
-- **MapStruct** pour le mapping DTO/Entity automatique
-- **Maven** pour la gestion des dépendances et build
+## 🛠️ Stack technologique
 
-### 🎨 Frontend - Interface utilisateur (React)
-- **React 19.1.1** avec hooks modernes
-- **Vite 7.2.4** pour un développement ultra-rapide
-- **React Router DOM 7.9.5** avec protection des routes
-- **Bootstrap 5.3.8** pour un design responsive
-- **Context API** pour la gestion d'état globale
-- **Hooks personnalisés** pour la logique métier réutilisable
+### Backend
 
-### 🐳 DevOps & Déploiement
-- **Docker & Docker Compose** - Conteneurisation backend avec bases de données
-- **Vite Build** - Build optimisé du frontend pour production
-- **Configurations par environnement** (dev, preprod, prod)
-- **Base H2** intégrée pour le développement rapide
+| Catégorie | Technologie | Version | Description |
+|-----------|-------------|---------|-------------|
+| **Runtime** | Java | 21 | Eclipse Temurin |
+| **Framework** | Spring Boot | 3.5.3 | Framework principal |
+| **Web** | Spring Web | 3.5.3 | API REST |
+| **Sécurité** | Spring Security | 6.x | Authentification et autorisation |
+| **ORM** | Spring Data JPA | 3.5.3 | Mapping objet-relationnel |
+| **NoSQL** | Spring Data MongoDB | 3.5.3 | Accès MongoDB |
+| **Validation** | Spring Validation | 3.5.3 | Validation des données |
+| **Monitoring** | Spring Actuator | 3.5.3 | Health checks et métriques |
+| **JWT** | JJWT | 0.12.3 | Gestion des tokens JWT |
+| **Mapping** | MapStruct | 1.5.5 | Mapping DTO ↔ Entity |
+| **Utilitaires** | Lombok | latest | Réduction du boilerplate |
+| **PDF** | iText 7 | 8.0.2 | Génération de documents PDF |
+| **Excel** | Apache POI | 5.2.5 | Génération de fichiers Excel |
+| **Build** | Maven | 3.9+ | Gestion des dépendances |
 
-## 🚀 Démarrage rapide
+### Bases de données
 
-### Prérequis système
-- **Java 21+** (OpenJDK recommandé)
-- **Node.js 18+** avec npm
-- **Maven 3.9+**
-- **Docker & Docker Compose** (pour preprod/prod)
-- **MongoDB** (local pour dev, conteneurisé pour prod)
+| Technologie | Version | Usage |
+|-------------|---------|-------|
+| **MySQL** | 8.3 | Données relationnelles (utilisateurs, véhicules, réservations) |
+| **MongoDB** | 7.0 | Données géospatiales (stations avec index 2dsphere) |
+| **H2** | latest | Base en mémoire pour développement |
 
-### 🔧 Installation complète
+### Frontend
+
+| Catégorie | Technologie | Version | Description |
+|-----------|-------------|---------|-------------|
+| **Core** | React | 19.1.1 | Bibliothèque UI |
+| **DOM** | React DOM | 19.1.1 | Rendu DOM |
+| **Routing** | React Router DOM | 7.9.5 | Navigation SPA |
+| **Build** | Vite | 7.2.4 | Bundler et dev server |
+| **Cartographie** | MapLibre GL | 5.14.0 | Rendu cartographique WebGL |
+| **Map React** | react-map-gl | 8.1.0 | Wrapper React pour MapLibre |
+| **CSS** | Bootstrap | 5.3.8 | Framework CSS (via CDN) |
+| **Icônes** | Bootstrap Icons | 1.13.1 | Icônes SVG |
+| **Cookies** | js-cookie | 3.0.5 | Gestion des cookies |
+| **JWT** | jwt-decode | 4.0.0 | Décodage des tokens JWT |
+| **Validation** | PropTypes | 15.8.1 | Validation des props |
+| **Linting** | ESLint | 9.39.1 | Qualité du code |
+
+### APIs externes
+
+| Service | Usage |
+|---------|-------|
+| **OpenStreetMap Nominatim** | Géocodage (adresse → coordonnées) |
+| **Photon (Komoot)** | Géocodage inverse (coordonnées → adresse) |
+| **Carto Basemaps** | Tuiles cartographiques |
+| **Geolocation API** | Position GPS du navigateur |
+
+### Infrastructure & DevOps
+
+| Technologie | Version | Usage |
+|-------------|---------|-------|
+| **Docker** | latest | Conteneurisation |
+| **Docker Compose** | latest | Orchestration multi-conteneurs |
+| **Nginx** | Alpine | Serveur web frontend |
+| **Node.js** | 18 Alpine | Build frontend |
+| **Maven** | 3.9.6 | Build backend |
+| **Eclipse Temurin** | 21 JRE Alpine | Runtime Java production |
+| **GHCR** | - | Registry d'images Docker |
+
+---
+
+## 🏗️ Architecture logicielle
+
+### Vue d'ensemble
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT (Navigateur)                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         FRONTEND (React + Vite)                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │   Pages     │  │ Components  │  │  Contexts   │  │       Hooks         │ │
+│  │             │  │             │  │             │  │                     │ │
+│  │ - Home      │  │ - Form      │  │ - Auth      │  │ - useApiCall        │ │
+│  │ - Search    │  │ - Map       │  │ - Bookings  │  │ - useGeolocation    │ │
+│  │ - Dashboard │  │ - Spinner   │  │ - List      │  │ - useStationAddress │ │
+│  │ - Auth      │  │ - Dashboard │  │ - Error     │  │ - useViewport       │ │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │
+│                                       │                                      │
+│  ┌────────────────────────────────────┼────────────────────────────────────┐ │
+│  │                           Services Layer                                │ │
+│  │  BookingService │ StationService │ VehicleService │ UserService │ Geo  │ │
+│  └────────────────────────────────────┼────────────────────────────────────┘ │
+│                                       │                                      │
+│  ┌────────────────────────────────────┼────────────────────────────────────┐ │
+│  │                    ApiRequest.js (Client HTTP)                          │ │
+│  └────────────────────────────────────┼────────────────────────────────────┘ │
+└───────────────────────────────────────┼─────────────────────────────────────┘
+                                        │ HTTP (cookies JWT)
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         BACKEND (Spring Boot)                                │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                         Security Layer                                  ││
+│  │  JwtFilter → SecurityConfig → CORS → BCrypt                            ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                       │                                      │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                        Controllers (REST API)                           ││
+│  │  AuthController │ UserController │ VehicleController │ ...             ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                       │                                      │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                         Services (Business Logic)                       ││
+│  │  AuthService │ UserService │ VehicleService │ StationService │ ...     ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                       │                                      │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                              DTOs + MapStruct                           ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                       │                                      │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                           Repositories                                  ││
+│  │           JPA Repositories          │       MongoDB Repositories       ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+└───────────────────────────────────────┬─────────────────────────────────────┘
+                                        │
+                    ┌───────────────────┴───────────────────┐
+                    ▼                                       ▼
+        ┌───────────────────────┐               ┌───────────────────────┐
+        │       MySQL 8.3       │               │     MongoDB 7.0       │
+        │                       │               │                       │
+        │ - Users               │               │ - Stations            │
+        │ - Vehicles            │               │   (avec index         │
+        │ - Bookings            │               │    géospatial         │
+        │ - Places              │               │    2dsphere)          │
+        │ - VehicleModels       │               │                       │
+        └───────────────────────┘               └───────────────────────┘
+```
+
+### Structure Backend
+
+```
+electricity-business-back/
+├── src/main/java/com/laipe/electricitybusiness/
+│   ├── config/              # Configuration Spring
+│   │   ├── SecurityConfig   # Spring Security + CORS
+│   │   ├── JwtFilter        # Filtre d'authentification JWT
+│   │   └── MongoConfig      # Configuration MongoDB
+│   │
+│   ├── controller/          # Endpoints REST
+│   │   ├── AuthController   # /api/auth/*
+│   │   ├── UserController   # /api/users/*
+│   │   ├── VehicleController # /api/vehicles/*
+│   │   ├── PlaceController  # /api/places/*
+│   │   ├── StationController # /api/stations/*
+│   │   └── BookingController # /api/bookings/*
+│   │
+│   ├── dto/                 # Data Transfer Objects
+│   │   ├── request/         # DTOs de requête
+│   │   ├── response/        # DTOs de réponse
+│   │   └── mapper/          # Mappers MapStruct
+│   │
+│   ├── model/               # Entités
+│   │   ├── jpa/             # Entités JPA (MySQL)
+│   │   └── mongo/           # Documents MongoDB
+│   │
+│   ├── repository/          # Accès données
+│   │   ├── jpa/             # Repositories JPA
+│   │   └── mongo/           # Repositories MongoDB
+│   │
+│   ├── service/             # Logique métier
+│   │
+│   └── utils/               # Utilitaires
+│       ├── JwtUtils         # Génération/validation JWT
+│       └── ExportUtils      # Génération PDF/Excel
+│
+├── src/main/resources/
+│   ├── application-dev.properties    # Config développement
+│   ├── application-preprod.properties # Config pré-production
+│   ├── application-prod.properties   # Config production
+│   └── data/                         # Données d'initialisation
+│
+├── Dockerfile               # Image Docker multi-stage
+├── docker-compose.yml       # Pré-production
+└── docker-compose.prod.yml  # Production
+```
+
+### Structure Frontend
+
+```
+electricity-business-front/
+├── src/
+│   ├── main.jsx             # Point d'entrée
+│   ├── Router.jsx           # Configuration des routes
+│   ├── RouteGuard.jsx       # Protection des routes
+│   │
+│   ├── components/          # Composants réutilisables
+│   │   ├── form/            # Input, Button, Toggle, etc.
+│   │   ├── map/             # Carte, markers, popups
+│   │   ├── dashboard/       # Composants du tableau de bord
+│   │   ├── search/          # Formulaire de recherche
+│   │   └── spinner/         # Indicateurs de chargement
+│   │
+│   ├── contexts/            # État global React
+│   │   ├── AuthContext      # Authentification
+│   │   ├── BookingsContext  # Réservations
+│   │   ├── ListContext      # Listes génériques
+│   │   └── GlobalErrorContext # Gestion d'erreurs
+│   │
+│   ├── hooks/               # Hooks personnalisés
+│   │   ├── useApiCall       # Appels API
+│   │   ├── useFetch         # Fetch générique
+│   │   ├── useGeolocation   # Géolocalisation
+│   │   ├── useStationAddress # Adresse des stations
+│   │   └── useViewport      # Responsive design
+│   │
+│   ├── layouts/             # Mise en page
+│   │   ├── Header           # Navigation
+│   │   ├── Footer           # Pied de page
+│   │   └── DashboardLayout  # Layout dashboard
+│   │
+│   ├── pages/               # Pages de l'application
+│   │   ├── Home             # Page d'accueil
+│   │   ├── Search           # Recherche de stations
+│   │   ├── BookingCreate    # Création de réservation
+│   │   ├── auth/            # Login, Register, etc.
+│   │   ├── dashboard/       # Pages du dashboard
+│   │   └── navigation/      # Error, NotFound, etc.
+│   │
+│   ├── services/            # Services API
+│   │   ├── BookingService   # Réservations
+│   │   ├── StationService   # Stations
+│   │   ├── VehicleService   # Véhicules
+│   │   ├── UserService      # Utilisateurs
+│   │   └── GeoService       # Géocodage
+│   │
+│   ├── utils/               # Utilitaires
+│   │   ├── ApiRequest       # Client HTTP
+│   │   ├── DateUtils        # Formatage dates
+│   │   └── MapUtils         # Utilitaires carte
+│   │
+│   ├── config/              # Configuration
+│   │   └── routes.js        # Définition des routes
+│   │
+│   └── assets/              # Ressources statiques
+│       └── css/globals.css  # Styles globaux
+│
+├── Dockerfile               # Build multi-stage
+├── nginx.conf               # Config Nginx
+├── docker-compose.yml       # Dev/Prod
+└── vite.config.js           # Configuration Vite
+```
+
+### Flux d'authentification
+
+```
+┌──────────┐     POST /auth/register      ┌──────────┐     INSERT      ┌──────────┐
+│  Client  │ ───────────────────────────► │   API    │ ───────────────►│  MySQL   │
+└──────────┘                              └──────────┘                 └──────────┘
+                                                │
+                                                ▼ Email de vérification
+                                                
+┌──────────┐     POST /auth/login         ┌──────────┐    Vérification ┌──────────┐
+│  Client  │ ───────────────────────────► │   API    │ ───────────────►│  MySQL   │
+└──────────┘                              └──────────┘                 └──────────┘
+     ▲                                          │
+     │         JWT en cookie HTTP-only          │
+     └──────────────────────────────────────────┘
+
+┌──────────┐     Requête + Cookie JWT     ┌──────────┐
+│  Client  │ ───────────────────────────► │   API    │ ─► Validation JWT ─► Réponse
+└──────────┘                              └──────────┘
+```
+
+---
+
+## 🚀 Guide de déploiement
+
+### Prérequis
+
+| Outil | Version | Usage |
+|-------|---------|-------|
+| Java | 21+ | Runtime backend (dev) |
+| Node.js | 18+ | Build frontend |
+| Maven | 3.9+ | Build backend |
+| Docker | 20+ | Conteneurisation |
+| Docker Compose | 2+ | Orchestration |
+| MongoDB | 7.0 | Requis en dev local |
+
+---
+
+### Partie 1 : Déploiement du Backend
+
+#### Développement local
 
 ```bash
-# 1. Cloner le projet principal
-git clone https://github.com/LaiPe/electricity-business.git
-cd electricity-business
+# Cloner le projet
+git clone --recurse-submodules https://github.com/LaiPe/electricity-business.git
+cd electricity-business/electricity-business-back
 
-# 2. Mise à jour des sous-modules
-git submodule update --init --recursive
+# Lancer MongoDB localement (requis)
+# mongod --dbpath /path/to/data
 
-# 3. Démarrage backend (terminal 1)
-cd electricity-business-back
+# Démarrer l'application (profil dev avec H2)
 mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
+```
 
-# 4. Installation et démarrage frontend (terminal 2)
-cd ../electricity-business-front
+**URLs disponibles :**
+- API : http://localhost:8080/api
+- H2 Console : http://localhost:8080/h2-console
+- Health : http://localhost:8080/actuator/health
+
+#### Pré-production (Docker)
+
+```bash
+cd electricity-business-back
+
+# Démarrer tous les services (MySQL + MongoDB + API)
+docker-compose up -d
+
+# Vérifier les logs
+docker-compose logs -f app
+```
+
+**Services déployés :**
+| Service | Conteneur | Port |
+|---------|-----------|------|
+| API Spring | eb-app_preprod | 8080 |
+| MySQL | eb-mysql_preprod | 3306 |
+| MongoDB | eb-mongodb_preprod | 27018 |
+
+#### Production (Docker)
+
+```bash
+cd electricity-business-back
+
+# Créer le fichier .env.prod avec les variables sensibles
+cat > .env.prod << EOF
+MYSQL_ROOT_PASSWORD=secure_root_password
+MYSQL_DATABASE=eb_db
+MYSQL_USER=eb_user
+MYSQL_PASSWORD=secure_password
+MONGO_INITDB_ROOT_USERNAME=admin
+MONGO_INITDB_ROOT_PASSWORD=secure_mongo_password
+MONGO_INITDB_DATABASE=eb_db
+PROD_DB_USER=eb_user
+PROD_DB_PASS=secure_password
+PROD_MONGO_USER=admin
+PROD_MONGO_PASS=secure_mongo_password
+JWT_SECRET=your_very_long_and_secure_jwt_secret_key
+CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
+EOF
+
+# Déployer en production
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+**Caractéristiques production :**
+- Images depuis GitHub Container Registry
+- Réseau interne isolé pour les bases de données
+- Volumes persistants pour les données
+- Health checks configurés
+- Conteneurs en mode read-only
+- Capabilities Docker minimales
+
+---
+
+### Partie 2 : Déploiement du Frontend
+
+#### Développement local
+
+```bash
+cd electricity-business-front
+
+# Installer les dépendances
 npm install
+
+# Créer le fichier .env
+echo "VITE_API_URL=http://localhost:8080/api" > .env
+
+# Démarrer le serveur de développement
 npm run dev
 ```
 
-### 🌐 Accès aux applications
+**URL disponible :** http://localhost:5173
 
-| Application | URL de développement | Description |
-|-------------|---------------------|-------------|
-| **Frontend** | http://localhost:5173 | Interface utilisateur React |
-| **Backend API** | http://localhost:8080/api | API REST Spring Boot |
-| **H2 Console** | http://localhost:8080/h2-console | Base de données de développement |
-| **Health Check** | http://localhost:8080/actuator/health | Status de l'API |
-
-### ⚡ Démarrage avec Docker par composant
+#### Production (Docker)
 
 ```bash
-# Backend avec Docker (dans electricity-business-back/)
-cd electricity-business-back
-docker-compose up -d
+cd electricity-business-front
 
-# Pour la production backend
-docker-compose -f docker-compose.prod.yml up -d
+# Build et déploiement
+docker-compose up -d --build
 ```
 
-**Note :** Le frontend React est servi via Vite en développement ou build statique en production.
+Le Dockerfile effectue un build multi-stage :
+1. **Stage Build** : Node.js 18 Alpine compile l'application
+2. **Stage Production** : Nginx Alpine sert les fichiers statiques
 
-## 📁 Structure du projet
+**Configuration Nginx incluse :**
+- Gestion du routage SPA (fallback vers index.html)
+- Headers de sécurité
+- Compression gzip
+- Cache des assets statiques
 
-```
-electricity-business/
-├── README.md                           # Documentation principale du projet
-├── electricity-business-back/          # 🎯 Backend API Spring Boot
-│   ├── src/main/java/                 # Code source Java
-│   │   └── com/laipe/electricitybusiness/
-│   │       ├── config/                # Configuration sécurité, CORS, JWT
-│   │       ├── controller/            # Controllers REST avec validation
-│   │       ├── dto/                   # Data Transfer Objects
-│   │       ├── model/                 # Entités JPA et MongoDB  
-│   │       ├── repository/            # Repositories JPA et MongoDB
-│   │       ├── service/               # Logique métier
-│   │       └── utils/                 # Utilitaires (JWT, validation)
-│   ├── src/main/resources/            # Fichiers de configuration
-│   │   ├── application-{env}.properties # Config par environnement
-│   │   └── data/                      # Données d'initialisation
-│   ├── docker-compose.yml             # Configuration pré-production
-│   ├── docker-compose.prod.yml        # Configuration production
-│   ├── Dockerfile                     # Image Docker de l'API
-│   └── pom.xml                        # Configuration Maven
-│
-└── electricity-business-front/         # 🎨 Frontend React
-    ├── src/                           # Code source React
-    │   ├── components/                # Composants réutilisables
-    │   │   ├── form/                  # Composants de formulaire
-    │   │   └── spinner/               # Indicateurs de chargement
-    │   ├── contexts/                  # Contextes React (Auth, Listes)
-    │   ├── hooks/                     # Hooks personnalisés (API, Listes)
-    │   ├── layouts/                   # Composants de mise en page
-    │   ├── pages/                     # Pages de l'application
-    │   │   ├── auth/                  # Authentification
-    │   │   ├── navigation/            # Pages d'erreur et navigation
-    │   │   └── *.jsx                  # Pages principales
-    │   ├── utils/                     # Utilitaires (API client)
-    │   ├── Router.jsx                 # Configuration du routage
-    │   └── main.jsx                   # Point d'entrée
-    ├── package.json                   # Dépendances npm
-    └── vite.config.js                 # Configuration Vite
-```
+#### Build manuel (sans Docker)
 
-## 🔐 Sécurité et authentification
-
-### 🛡️ Architecture de sécurité
-- **JWT stockés en cookies HTTP-only** pour une sécurité maximale
-- **Hashage BCrypt** pour tous les mots de passe
-- **CORS configuré** strictement pour les domaines autorisés
-- **Validation des données** à tous les niveaux (frontend et backend)
-- **Protection CSRF** via la configuration des cookies
-
-### 👥 Système de rôles et permissions
-
-| Rôle | Permissions | Accès Frontend | Accès API |
-|------|-------------|----------------|-----------|
-| **Anonyme** | Consultation publique | Pages d'accueil, connexion | Endpoints publics |
-| **Non vérifié** | En attente de validation | Pages de vérification | Endpoints de base |
-| **Utilisateur** | Gestion complète de ses ressources | Toutes fonctionnalités utilisateur | Endpoints utilisateur |
-| **Banni** | Accès restreint | Page d'information | Déconnexion uniquement |
-| **Admin** | Supervision complète | Interface d'administration | Tous endpoints |
-
-### 🔄 Flux d'authentification sécurisé
-
-```mermaid
-sequenceDiagram
-    participant F as Frontend
-    participant A as API
-    participant D as Database
-    
-    F->>A: POST /api/auth/register
-    A->>D: Créer utilisateur (non vérifié)
-    A->>F: Email de vérification envoyé
-    F->>A: POST /api/auth/login
-    A->>D: Vérifier credentials
-    A->>F: JWT en cookie HTTP-only
-    F->>A: GET /api/auth/status (auto)
-    A->>F: Informations utilisateur
-```
-
-## 🌍 Environnements et déploiement
-
-### 🔧 Configuration multi-environnements
-
-| Environnement | Backend | Frontend | Base de données | Usage |
-|---------------|---------|----------|-----------------|-------|
-| **Développement** | `localhost:8080` | `localhost:5173` (Vite) | H2 + MongoDB local | Développement quotidien |
-| **Pré-production** | Docker Compose | Build statique | MySQL + MongoDB (Docker) | Tests d'intégration |
-| **Production** | Container Registry | Serveur web statique | Cluster MySQL/MongoDB | Déploiement final |
-
-### 🐳 Déploiement Docker
-
-**Backend (dans electricity-business-back/) :**
 ```bash
-# Pré-production
-docker-compose up -d
+cd electricity-business-front
 
-# Production
-docker-compose -f docker-compose.prod.yml up -d
+# Variables d'environnement de production
+export VITE_API_URL=https://api.your-domain.com/api
 
-# Services inclus : backend, mysql, mongodb
-```
-
-**Frontend (dans electricity-business-front/) :**
-```bash
-# Build pour production
+# Build de production
 npm run build
 
-# Le frontend génère des fichiers statiques dans dist/
-# À servir via un serveur web (nginx, apache, etc.)
+# Les fichiers sont générés dans dist/
+# À servir via Nginx, Apache, ou tout serveur web statique
 ```
-
-### 📊 Monitoring et santé
-
-**Endpoints de monitoring disponibles :**
-- `GET /actuator/health` - État de l'API
-- `GET /actuator/metrics` - Métriques de performance
-- Logs détaillés configurés par environnement
-- Health checks Docker intégrés
-
-## 🔗 Intégration et API
-
-### 📡 Documentation des endpoints
-
-L'API REST offre une couverture complète des fonctionnalités :
-
-| Groupe | Endpoints | Fonctionnalités |
-|--------|-----------|-----------------|
-| **Authentication** | `/api/auth/*` | Login, register, logout, vérification de statut |
-| **Users** | `/api/users/*` | Gestion des profils et informations utilisateur |
-| **Vehicles** | `/api/vehicles/*` | Catalogue de modèles et véhicules personnels |
-| **Places** | `/api/places/*` | Création et gestion des lieux de recharge |
-| **Stations** | `/api/stations/*` | CRUD des stations avec recherche géospatiale |
-| **Bookings** | `/api/bookings/*` | Système complet de réservation et évaluation |
-
-**Documentation détaillée :** [ENDPOINTS.md](electricity-business-back/ENDPOINTS.md)
-
-### 🔄 Communication Frontend-Backend
-
-```javascript
-// Configuration automatique dans ApiRequest.js
-const apiCall = async (endpoint, options = {}) => {
-  return fetch(`${API_URL}${endpoint}`, {
-    credentials: 'include',      // Cookies automatiques
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers
-    },
-    ...options
-  });
-};
-```
-
-**Fonctionnalités intégrées :**
-- ✅ Gestion automatique des cookies JWT
-- ✅ Retry automatique en cas d'échec temporaire
-- ✅ Loading states synchronisés avec l'interface
-- ✅ Gestion d'erreurs centralisée avec messages utilisateur
-- ✅ Support complet des codes de statut HTTP
-
-## 🧪 Tests et qualité
-
-### 🔍 Backend Testing
-```bash
-# Tests unitaires
-mvn test
-
-# Tests d'intégration
-mvn verify
-
-# Couverture de code
-mvn jacoco:report
-```
-
-### 🎨 Frontend Quality
-```bash
-# Linting du code
-npm run lint
-
-# Build de validation
-npm run build
-
-# Preview de production
-npm run preview
-```
-
-### 📊 Standards de qualité
-- **Code coverage** minimum 70% pour le backend
-- **ESLint** strict pour la qualité frontend
-- **PropTypes** obligatoire pour tous les composants React
-- **Validation des données** à tous les niveaux
-- **Documentation** des fonctions complexes
-
-## 🤝 Contribution
-
-### 📋 Workflow de développement
-
-1. **Fork** du projet depuis GitHub
-2. **Clone local** avec sous-modules : `git clone --recurse-submodules`
-3. **Branche feature** : `git checkout -b feature/nom-fonctionnalite`
-4. **Développement** en suivant les standards du projet
-5. **Tests locaux** complets (backend + frontend)
-6. **Commit** avec messages explicites
-7. **Push** et **Pull Request** avec description détaillée
-
-### ⚙️ Configuration de développement
-
-**Variables d'environnement nécessaires :**
-
-Backend (`application-dev.properties`) :
-```properties
-# Base de données de développement
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.data.mongodb.database=electricity_business_dev
-
-# Configuration JWT
-jwt.secret=your-development-jwt-secret
-jwt.expiration=86400000
-```
-
-Frontend (`.env`) :
-```env
-# URL de l'API de développement
-VITE_API_URL=http://localhost:8080/api
-
-# Environnement
-VITE_ENV=dev
-```
-
-### 🔧 Outils de développement recommandés
-
-**IDE et extensions :**
-- **IntelliJ IDEA** ou **VS Code** pour le backend Java
-- **VS Code** avec extensions React pour le frontend
-- **Postman** ou **Insomnia** pour tester l'API
-- **MongoDB Compass** pour visualiser les données géospatiales
-
-**Extensions VS Code recommandées :**
-- ES7+ React/Redux/React-Native snippets
-- Auto Rename Tag
-- Bracket Pair Colorizer
-- Extension Pack for Java
-
-## 📚 Documentation et ressources
-
-### 📖 Documentation complète du projet
-
-| Document | Emplacement | Description |
-|----------|-------------|-------------|
-| **README Principal** | `/README.md` | Vue d'ensemble du projet complet |
-| **Backend README** | `/electricity-business-back/README.md` | Documentation de l'API Spring Boot |
-| **Frontend README** | `/electricity-business-front/README.md` | Documentation de l'interface React |
-| **Documentation API** | `/electricity-business-back/ENDPOINTS.md` | Détails de tous les endpoints |
-| **Guide des environnements** | `/electricity-business-back/ENVIRONNEMENTS.md` | Configuration par environnement |
-
-### 🎓 Ressources d'apprentissage
-
-**Technologies utilisées :**
-- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-- [React Documentation](https://react.dev/)
-- [MongoDB Geospatial Queries](https://docs.mongodb.com/manual/geospatial-queries/)
-- [JWT Best Practices](https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/)
-- [Docker Compose Guide](https://docs.docker.com/compose/)
-
-### 🆘 Support et assistance
-
-**En cas de problème :**
-
-1. **Vérifier la documentation** correspondant au composant concerné
-2. **Consulter les logs** :
-   - Backend : Logs Spring Boot dans la console
-   - Frontend : Console du navigateur (F12)
-3. **Tester les endpoints** directement via l'API
-4. **Ouvrir une issue** avec :
-   - Description détaillée du problème
-   - Étapes de reproduction
-   - Environnement utilisé (dev/preprod/prod)
-   - Logs d'erreur complets
-
-**Contacts :**
-- **Issues GitHub** pour les bugs et demandes de fonctionnalités
-- **Documentation** pour les questions d'utilisation
-- **Code source** pour comprendre l'implémentation
-
-## 📄 Licence et remerciements
-
-### 📋 Licence
-Ce projet est distribué sous **licence MIT**. Voir le fichier `LICENSE` pour les détails complets.
-
-### 🙏 Remerciements
-- **Communauté Spring Boot** pour l'écosystème robuste
-- **Équipe React** pour les innovations constantes
-- **MongoDB** pour les capacités géospatiales
-- **Communauté open source** pour l'inspiration et les outils
 
 ---
 
-## 🚀 Démarrez dès maintenant !
+### Configuration des environnements
 
-```bash
-# Clone du projet complet
-git clone --recurse-submodules https://github.com/LaiPe/electricity-business.git
-cd electricity-business
-
-# Démarrage rapide en développement
-# Terminal 1 - Backend
-cd electricity-business-back && mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
-
-# Terminal 2 - Frontend  
-cd electricity-business-front && npm install && npm run dev
-
-# Accédez à l'application : http://localhost:5173
-```
-
-**Développé avec ❤️ par [LaiPe](https://github.com/LaiPe) pour accélérer la transition vers la mobilité électrique**
+| Environnement | Backend | Frontend | Bases de données |
+|---------------|---------|----------|------------------|
+| **Dev** | localhost:8080 | localhost:5173 | H2 (mémoire) + MongoDB local |
+| **Preprod** | Docker :8080 | Docker :3000 | MySQL + MongoDB (Docker) |
+| **Prod** | Docker (GHCR) | Docker (Nginx) | MySQL + MongoDB (volumes) |
 
 ---
 
-*⚡ **Electricity Business** - Connecter l'avenir de la mobilité électrique, une recharge à la fois.*
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [electricity-business-back/README.md](electricity-business-back/README.md) | Documentation du backend |
+| [electricity-business-front/README.md](electricity-business-front/README.md) | Documentation du frontend |
+| [electricity-business-back/ENDPOINTS.md](electricity-business-back/ENDPOINTS.md) | Documentation de l'API REST |
+| [electricity-business-back/ENVIRONNEMENTS.md](electricity-business-back/ENVIRONNEMENTS.md) | Guide des environnements |
+
+---
+
+## 📄 Licence
+
+Ce projet est distribué sous **licence MIT**. Voir les fichiers `LICENSE` pour plus de détails.
+
+---
+
+**Développé avec ❤️ par [LaiPe](https://github.com/LaiPe)**
